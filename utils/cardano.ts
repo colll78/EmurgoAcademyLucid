@@ -2,7 +2,7 @@ export const getAssets = async (address: string) => {
     var allNFTs: any = []
     var addressInfo = { nfts: allNFTs, balance: 0 }
     const data = await fetch(
-        `https://cardano-mainnet.blockfrost.io/api/v0/addresses/${address}`,
+        `https://cardano-preprod.blockfrost.io/api/v0/addresses/${address}`,
         {
             headers: {
                 // Your Blockfrost API key
@@ -23,7 +23,7 @@ export const getAssets = async (address: string) => {
             //var allNFTs = []
             if (asset.unit !== "lovelace") {
                 const data = await fetch(
-                    `https://cardano-mainnet.blockfrost.io/api/v0/assets/${asset.unit}`,
+                    `https://cardano-preprod.blockfrost.io/api/v0/assets/${asset.unit}`,
                     {
                         headers: {
                             // Your Blockfrost API key

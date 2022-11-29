@@ -21,68 +21,28 @@ const Helios: NextPage = () => {
 
   useEffect(() => {
     if (lucid) {
-      const thisScript: SpendingValidator = {
-        type: "PlutusV1",
-        script: JSON.parse(
-          helios.Program.new(`
-          spending matching_pubKeyHash
-          struct Datum {
-              owner: PubKeyHash
-          }
-          struct Redeemer {
-              owner: PubKeyHash
-          }
-          func main(datum : Datum, redeemer: Redeemer) -> Bool {datum.owner == redeemer.owner}
-      `).compile().serialize(),
-        ).cborHex,
-      };
-      setScript(thisScript)
-      setScriptAddress(lucid.utils.validatorToAddress(thisScript))
+      ;
     } else {
       initLucid(walletStore.name).then((Lucid: Lucid) => { setLucid(Lucid) })
     }
   }, [lucid])
 
-  const lockUtxo = async (lovelace: Lovelace) => {
+  const lockUtxo = async () => {
     if (lucid) {
-      const { paymentCredential } = lucid.utils.getAddressDetails(
-        await lucid.wallet.address(),
-      );
-
-      // This represents the Datum struct from the Helios on-chain code
-      const datum = Data.to(
-        new Constr(0, [new Constr(0, [paymentCredential?.hash!])]),
-      );
-
-      const tx = await lucid.newTx().payToContract(scriptAddress, datum, {
-        lovelace,
-      })
+      const receiving_addr : string = "addr_test1qryc5tck5kqqs3arcqnl4lplvw5yg2ujsdnhx5eawn9lyzzvpmpraw365fayhrtpzpl4nulq6f9hhdkh4cdyh0tgnjxsg03qnh"
+      const tx = await lucid.newTx()
+        .payToAddress(receiving_addr, { lovelace: BigInt(2000000) })
         .complete();
+      
       const signedTx = await tx.sign().complete();
-      console.log(await signedTx.submit());
+      
+      const txHash = await signedTx.submit();
     }
-
   }
 
   const redeemUtxo = async () => {
     if (lucid) {
-      const { paymentCredential } = lucid.utils.getAddressDetails(
-        await lucid.wallet.address(),
-      );
-
-      // This represents the Redeemer struct from the Helios on-chain code
-      const redeemer = Data.to(
-        new Constr(0, [new Constr(0, [paymentCredential?.hash!])]),
-      );
-
-      const [utxo] = await lucid.utxosAt(scriptAddress);
-
-      const tx = await lucid.newTx().collectFrom([utxo], redeemer)
-        .attachSpendingValidator(script as SpendingValidator)
-        .complete();
-
-      const signedTx = await tx.sign().complete();
-      console.log(await signedTx.submit());
+    console.log("Implement TODO") 
     }
   }
 
@@ -98,16 +58,12 @@ const Helios: NextPage = () => {
       </div>
       <div>Address: {walletStore.address}</div>
       <div className='m-10'>
-        <p>
-          MatchingPubKeyHash Example
-          Lock a UTxO with a PubKeyHash
-          UTxO can be unlocked by providing the same PubKeyHash in the redeemer
-          Showcasing Helios; Link: https://github.com/Hyperion-BT/Helios
+        <p> 
+          Emurgo example
         </p>
-
       </div>
       <div className="mx-40 my-10">
-        <button className="btn btn-primary m-5" onClick={() => { lockUtxo(BigInt(1000000)) }} >Deposit</button>
+        <button className="btn btn-primary m-5" onClick={() => { lockUtxo() }} >Deposit</button>
         <button className="btn btn-secondary m-5" onClick={() => { redeemUtxo() }}>Unlock</button>
       </div>
     </div>
