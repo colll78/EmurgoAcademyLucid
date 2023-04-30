@@ -94,7 +94,6 @@ export const OfferDatum = Data.Object({
     creator: PAddress,
     toBuy: Value
 }); 
-
 export type OfferDatum = Data.Static<typeof OfferDatum>;
 
 export type OfferInfo = {

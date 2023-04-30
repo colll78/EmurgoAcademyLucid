@@ -1,4 +1,4 @@
-import { Lucid, Blockfrost, utf8ToHex, C } from "lucid-cardano";
+import { Lucid, Blockfrost, C } from "lucid-cardano";
 import { useState, useEffect } from 'react';
 import { useStoreActions, useStoreState } from "../utils/store";
 import initLucid from "../utils/lucid";

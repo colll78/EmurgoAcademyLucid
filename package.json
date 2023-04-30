@@ -16,10 +16,11 @@
     "@hyperionbt/helios": "^0.7.8",
     "daisyui": "^2.31.0",
     "easy-peasy": "^5.1.0",
+    "helios-api": "npm:@hyperionbt/helios@^0.13.21",
+    "lucid-cardano": "^0.9.4",
     "next": "12.3.1",
     "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "lucid-cardano": "^0.9.4"
+    "react-dom": "17.0.2"
   },
   "devDependencies": {
     "@types/node": "18.7.18",
